@@ -21,10 +21,17 @@ public class MathController {
     }
 
     private Double converteToDouble(String strNumber) {
-        return 1D;
+        if(strNumber == null) return 0D;
+
+        String number = strNumber.replaceAll(",", ".");
+
+        if(isNumeric(number)) return Double.parseDouble(number);
+        return 0D;
     }
 
     private boolean isNumeric(String numberOne) {
-        return true;
+        if(numberOne == null) return false;
+        String number = numberOne.replaceAll(",", ".");
+        return number.matches("[-+]?[0-9]*\\.?[0-9]+");
     }
 }
