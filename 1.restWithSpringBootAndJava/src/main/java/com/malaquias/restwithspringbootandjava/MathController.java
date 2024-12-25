@@ -12,7 +12,19 @@ public class MathController {
     public Double sum(
             @PathVariable(value = "numberOne") String numberOne,
             @PathVariable(value = "numberTwo") String numberTwo
-    ){
+    )throws Exception{
+
+        if(!isNumeric(numberOne) || !isNumeric(numberTwo)){
+            throw new Exception();
+        }
+        return converteToDouble(numberOne) + converteToDouble(numberTwo);
+    }
+
+    private Double converteToDouble(String strNumber) {
         return 1D;
+    }
+
+    private boolean isNumeric(String numberOne) {
+        return true;
     }
 }
