@@ -1,5 +1,6 @@
 package com.malaquias.restwithspringbootandjava;
 
+import com.malaquias.restwithspringbootandjava.exceptions.UnsupportedMathOperationException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.atomic.AtomicLong;
@@ -15,7 +16,7 @@ public class MathController {
     )throws Exception{
 
         if(!isNumeric(numberOne) || !isNumeric(numberTwo)){
-            throw new Exception();
+            throw new UnsupportedMathOperationException("Please set a numeric value!");
         }
         return converteToDouble(numberOne) + converteToDouble(numberTwo);
     }
