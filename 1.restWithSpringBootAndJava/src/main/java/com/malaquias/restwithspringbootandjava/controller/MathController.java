@@ -1,13 +1,19 @@
-package com.malaquias.restwithspringbootandjava;
+package com.malaquias.restwithspringbootandjava.controller;
 
 import com.malaquias.restwithspringbootandjava.exceptions.UnsupportedMathOperationException;
+import com.malaquias.restwithspringbootandjava.math.SimpleMath;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+import static com.malaquias.restwithspringbootandjava.converter.NumberConverter.converteToDouble;
+import static com.malaquias.restwithspringbootandjava.converter.NumberConverter.isNumeric;
+
+
 @RestController
 public class MathController {
     private  final AtomicLong counter  = new AtomicLong();
+    private final SimpleMath math = new SimpleMath();
 
     /*Sum*/
     // http://localhost:8080/sum/10/5
@@ -20,7 +26,7 @@ public class MathController {
         if(!isNumeric(numberOne) || !isNumeric(numberTwo)){
             throw new UnsupportedMathOperationException("Please set a numeric value!");
         }
-        return converteToDouble(numberOne) + converteToDouble(numberTwo);
+        return math.sum(converteToDouble(numberOne), converteToDouble(numberTwo));
     }
 
     /*Subtraction*/
@@ -34,7 +40,7 @@ public class MathController {
         if(!isNumeric(numberOne) || !isNumeric(numberTwo)){
             throw new UnsupportedMathOperationException("Please set a numeric value!");
         }
-        return converteToDouble(numberOne) - converteToDouble(numberTwo);
+        return math.subtraction(converteToDouble(numberOne), converteToDouble(numberTwo));
     }
 
     /*Multiplication*/
@@ -48,7 +54,7 @@ public class MathController {
         if(!isNumeric(numberOne) || !isNumeric(numberTwo)){
             throw new UnsupportedMathOperationException("Please set a numeric value!");
         }
-        return converteToDouble(numberOne) * converteToDouble(numberTwo);
+        return math.multiplication(converteToDouble(numberOne), converteToDouble(numberTwo));
     }
 
     /*Division*/
@@ -65,7 +71,7 @@ public class MathController {
             if(converteToDouble(numberTwo) == 0){
                 throw new UnsupportedMathOperationException("Division by zero is not allowed!");
             }
-            return converteToDouble(numberOne) / converteToDouble(numberTwo);
+            return math.division(converteToDouble(numberOne), converteToDouble(numberTwo));
     }
 
     /*Mean*/
@@ -79,7 +85,7 @@ public class MathController {
             if(!isNumeric(numberOne) || !isNumeric(numberTwo)){
                 throw new UnsupportedMathOperationException("Please set a numeric value!");
             }
-            return (converteToDouble(numberOne) + converteToDouble(numberTwo)) / 2;
+            return math.mean(converteToDouble(numberOne), converteToDouble(numberTwo));
     }
 
     /*Square Root*/
@@ -92,21 +98,8 @@ public class MathController {
                 if(!isNumeric(number)){
                     throw new UnsupportedMathOperationException("Please set a numeric value!");
                 }
-                return (Double) Math.sqrt(converteToDouble(number));
+                return math.squareRoot(converteToDouble(number));
     }
 
-    private Double converteToDouble(String strNumber) {
-        if(strNumber == null) return 0D;
 
-        String number = strNumber.replaceAll(",", ".");
-
-        if(isNumeric(number)) return Double.parseDouble(number);
-        return 0D;
-    }
-
-    private boolean isNumeric(String numberOne) {
-        if(numberOne == null) return false;
-        String number = numberOne.replaceAll(",", ".");
-        return number.matches("[-+]?[0-9]*\\.?[0-9]+");
-    }
 }
